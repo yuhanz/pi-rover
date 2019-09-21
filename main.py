@@ -38,4 +38,4 @@ def setSpeed(rate):
     pwmControlWheelRight.setStrength(rate);
 
 
-GPIO.cleanup()
+#GPIO.cleanup()

@@ -6,6 +6,7 @@ class PwmDcControl:
         self.ena = ena
         self.in1 = in1
         self.in2 = in2
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(in1,GPIO.OUT)
         GPIO.setup(in2,GPIO.OUT)
         GPIO.setup(ena,GPIO.OUT)
@@ -25,10 +26,14 @@ class PwmDcControl:
     def setInputState(self, desiredInputStates):
         if(self.inputStates == desiredInputStates):
             return
+        GPIO.setmode(GPIO.BCM)
+        x = map(lambda pair: [pair[0], pair[1]], zip([self.in1, self.in2], desiredInputStates))
+        print(x)
+
         map(lambda pair: GPIO.output(pair[0], pair[1]), zip([self.in1, self.in2], desiredInputStates))
         self.inputStates = desiredInputStates
     def displayStatus(self, status):
-        print("{}:{}".format(self.name, self.status))
+        print("{}:{}".format(self.name, status))
     def backward(self):
         self.setInputState([GPIO.HIGH, GPIO.LOW])
         self.displayStatus("backward")
@@ -50,7 +55,7 @@ class PwmDcControl:
         self.validateDuty(duty)
         print("changeDuty={}".format(duty))
         self.pwm.ChangeDutyCycle(capDuty(duty))
-    # Adjust motor strength between [0, 1] at the safe voltage range
+    # Adjust motor strength between [0, 1] at the safe voltage range.
     def setStrength(self, rate):
         if(rate <0 or rate > 1):
             raise Exception("rate must be between [0,1]")
