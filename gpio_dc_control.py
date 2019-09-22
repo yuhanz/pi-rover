@@ -22,7 +22,7 @@ class PwmDcControl:
         self.pwmDuty = pwmDuty
         print("init duty={}".format(pwmDuty))
     def toString(self):
-        return "name={}, pins(ena,in1,in2)={}, pwm(frequency,duty)={}, constraint(duty,maxDuty)={}".format(self.name, (self.ena, self.in1, self.in2), (self.pwmFrequency, self.pwmDuty), (self.duty, self.maxDuty))
+        return "name={}, pins(ena,in1,in2)={}, pwm(frequency,duty)={}, constraint(duty,maxDuty)={}".format(self.name, (self.ena, self.in1, self.in2), (self.pwmFrequency,self.pwmDuty), self.maxDuty)
     def setInputState(self, desiredInputStates):
         if(self.inputStates == desiredInputStates):
             return
