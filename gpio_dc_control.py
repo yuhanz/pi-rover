@@ -22,7 +22,7 @@ class PwmDcControl:
         self.pwmDuty = pwmDuty
         print("init duty={}".format(pwmDuty))
     def toString(self):
-        return "name={}, pins(ena,in1,in2)={}, pwm(frequency,duty)={}, constraint(maxDuty)={}".format(self.name, (self.ena, self.in1, self.in2), (self.pwmFrequency,self.pwmDuty), self.maxDuty)
+        return "name={}, pins(ena,in1,in2)={}, pwm(frequency,duty)={}, constraint(duty,maxDuty)={}".format(self.name, (self.ena, self.in1, self.in2), (self.pwmFrequency, self.pwmDuty), (self.duty, self.maxDuty))
     def setInputState(self, desiredInputStates):
         if(self.inputStates == desiredInputStates):
             return
@@ -53,8 +53,9 @@ class PwmDcControl:
             raise Exception("duty={} is above the maxDuty={} for {}".format(duty, maxDuty, name))
     def setPwmDuty(self, duty):
         self.validateDuty(duty)
-        print("changeDuty={}".format(duty))
-        self.pwm.ChangeDutyCycle(capDuty(duty))
+        print("{}.changeDuty={}".format(self.name, duty))
+        self.pwm.ChangeDutyCycle(self.capDuty(duty))
+        self.pwmDuty = duty
     # Adjust motor strength between [0, 1] at the safe voltage range.
     def setStrength(self, rate):
         if(rate <0 or rate > 1):

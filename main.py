@@ -7,7 +7,7 @@ DC_MAX_VOLTAGE = 3
 
 GPIO.setmode(GPIO.BCM)
 
-pwmControlWheelRight = PwmDcControl(name = "rightWheel", ena = 25, in1 = 24, in2 = 23, pwmFrequency = PWM_FREQUENCY, pwmDuty = PWM_INITIAL_DUTY, inputVoltage = MOTOR_INPUT_VOLTAGE, dcMaxVoltage = DC_MAX_VOLTAGE)
+pwmControlWheelRight = PwmDcControl(name = "rightWheel", ena = 25, in1 = 23, in2 = 24, pwmFrequency = PWM_FREQUENCY, pwmDuty = PWM_INITIAL_DUTY, inputVoltage = MOTOR_INPUT_VOLTAGE, dcMaxVoltage = DC_MAX_VOLTAGE)
 pwmControlWheelLeft = PwmDcControl(name = "leftWheel", ena = 9, in1 = 7, in2 = 8, pwmFrequency = PWM_FREQUENCY, pwmDuty = PWM_INITIAL_DUTY, inputVoltage = MOTOR_INPUT_VOLTAGE, dcMaxVoltage = DC_MAX_VOLTAGE)
 
 print("Wheel configurations:")
@@ -34,8 +34,13 @@ def stop():
     pwmControlWheelRight.stop()
 
 def setSpeed(rate):
-    pwmControlWheelLeft.setStrength(rate);
-    pwmControlWheelRight.setStrength(rate);
+    pwmControlWheelLeft.setStrength(rate)
+    pwmControlWheelRight.setStrength(rate)
 
+def setFrequency(frequency):
+    pwmControlWheelLeft.setPwmFrequency(frequency)
+    pwmControlWheelRight.setPwmFrequency(frequency)
+
+setSpeed(1.0)
 
 #GPIO.cleanup()
