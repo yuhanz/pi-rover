@@ -44,7 +44,7 @@ class PwmDcControl:
         self.setInputState([GPIO.LOW, GPIO.LOW])
         self.displayStatus("stop")
     def setPwmFrequency(self, frequency):
-        self.pwm.ChangeFrequency(frequncy)
+        self.pwm.ChangeFrequency(frequency)
     def capDuty(self, duty):
         cappedDuty = reduce(lambda a,b: min(a,b), [self.maxDuty, 100], duty)
         return max(cappedDuty, 0)
