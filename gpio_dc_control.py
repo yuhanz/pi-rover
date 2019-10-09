@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 
+# (ena, in1, in2) are input on L298N adapter
 class PwmDcControl:
     def __init__(self, name, ena, in1, in2, inputVoltage, dcMaxVoltage, pwmFrequency, pwmDuty = 0):
         self.name = name

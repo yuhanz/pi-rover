@@ -2,8 +2,8 @@ from gpio_dc_control import *
 
 PWM_FREQUENCY = 500
 PWM_INITIAL_DUTY = 15
-MOTOR_INPUT_VOLTAGE = 9
-DC_MAX_VOLTAGE = 3
+MOTOR_INPUT_VOLTAGE = 6     # measured as 5.24V at L298N output
+DC_MAX_VOLTAGE = 4          # TT motor is recommended to run at 6-8V; between 3V~12VDC
 
 GPIO.setmode(GPIO.BCM)
 
