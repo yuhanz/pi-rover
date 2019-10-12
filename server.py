@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 from rover_control import *
 
+import subprocess
+
 app = Flask(__name__)
 
 motorMoveFunctionMap = {
@@ -25,6 +27,13 @@ def motorMoveEndpoint():
     else:
         return '{"status": "not found"}'
 
+@app.route('/camera/start')
+def cameraStartEndpoint():
+    subprocess.call('start-camera.sh')
+
+@app.route('/camera/stop')
+def cameraStopEndpoint():
+    subprocess.call('kill-camera.sh')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -8,7 +8,10 @@
 			text-align: center;
 		}
 	</style>
-	
+	<script
+	  src="https://code.jquery.com/jquery-2.2.4.min.js"
+	  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+	  crossorigin="anonymous"></script>
 </head>
 <body>
 	<canvas id="video-canvas"></canvas>
@@ -18,5 +21,42 @@
 		var url = 'ws://'+document.location.hostname+':8082/';
 		var player = new JSMpeg.Player(url, {canvas: canvas});
 	</script>
+
+	<table>
+		<tr>
+			<td><button class='rover-control' value='/camera/'>🎥</button></td>
+			<td><button class='rover-control' value='/motor/forward'>⬆️</button></td>
+		</tr>
+		<tr>
+			<td><button class='rover-control' value='/motor/left'>⬅️</button></td>
+			<td><button class='rover-control' value='/motor/backward'>⬇️</button></td>
+			<td><button class='rover-control' value='/motor/right'>➡️</button></td>
+		</tr>
+	</table>
 </body>
 </html>
+
+<script>
+	var cameraState = 0;
+
+	function sendControlCommand(path) {
+		$.ajax({
+			url: path
+		}).done(() => {
+			console.log('Done: ' + path);
+		})
+	}
+
+	$('.rover-control').mousedown(e => {
+		path = $(e).attr('value');
+		if(path.startsWith('/motor/')) {
+			sendControlCommand(path);
+		} if(path.startsWith('/camera/')) {
+			sendControlCommand(path + ['stop','start'][cameraState=++cameraState%2]);
+		} else {
+			console.error('Unknown command: ' + path);
+		}
+	}).mouseup(e => {
+		sendControlCommand('/motor/stop');
+	})
+</script>
