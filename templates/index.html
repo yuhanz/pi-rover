@@ -48,7 +48,7 @@
 	}
 
 	$('.rover-control').mousedown(e => {
-		path = $(e).attr('value');
+		path = $(e.currentTarget).attr('value');
 		if(path.startsWith('/motor/')) {
 			sendControlCommand(path);
 		} if(path.startsWith('/camera/')) {
