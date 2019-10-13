@@ -21,7 +21,12 @@
 		var url = 'ws://'+document.location.hostname+':8082/';
 		var player = new JSMpeg.Player(url, {canvas: canvas});
 	</script>
-
+	<style>
+		button.rover-control {
+		  font-size: 35px;
+		}
+	</style>
+<center>
 	<table>
 		<tr>
 			<td><button class='rover-control' value='/camera/'>🎥</button></td>
@@ -33,6 +38,7 @@
 			<td><button class='rover-control' value='/motor/right'>➡️</button></td>
 		</tr>
 	</table>
+	<center>
 </body>
 </html>
 
