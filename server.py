@@ -14,8 +14,13 @@ motorMoveFunctionMap = {
 }
 
 @app.route('/')
-def index():
+def indexEndpoint():
     return render_template('index.html')
+
+@app.route('/jsmpeg.min.js')
+def jsMpegEndpoint():
+    return render_template('jsmpeg.min.js')
+
 
 @app.route('/motor/<move>')
 def motorMoveEndpoint():
