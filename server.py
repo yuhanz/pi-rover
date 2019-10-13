@@ -23,8 +23,7 @@ def jsMpegEndpoint():
 
 
 @app.route('/motor/<move>')
-def motorMoveEndpoint():
-    move = request.view_args['move']
+def motorMoveEndpoint(move):
     func = motorMoveFunctionMap.get(move, None)
     if func:
         func()
