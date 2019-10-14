@@ -33,11 +33,13 @@ def motorMoveEndpoint(move):
 
 @app.route('/camera/start')
 def cameraStartEndpoint():
-    subprocess.call('start-camera.sh')
+    subprocess.call('./start-camera.sh')
+    return '{"status": "OK"}'
 
 @app.route('/camera/stop')
 def cameraStopEndpoint():
-    subprocess.call('kill-camera.sh')
+    subprocess.call('./kill-camera.sh')
+    return '{"status": "OK"}'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
