@@ -29,8 +29,6 @@ def holdFromFalling(acceleration, anglarVelocity):
     constantToLearn = 123  # TODO
     return ax * constantToLearn
 
-def fromBalanceToAngle(acceleration, theta):
-
 
 
 def observeGyro():

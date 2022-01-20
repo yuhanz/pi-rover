@@ -16,6 +16,7 @@ class Mpu6050:
     GYRO_Z  = 0x47
     TEMP = 0x41
     bus = smbus.SMBus(1)
+    Device_Address = 0x68
 
     ACCELERATION_UNIT = 1   # 1g
     GYRO_UNIT = 125     # degree /sec
