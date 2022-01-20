@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask import stream_with_context, request, Response
 from rover_control import *
 import time
 import subprocess
@@ -28,7 +29,7 @@ def jsMpegEndpoint():
     return render_template('jsmpeg.min.js')
 
 @app.route('/mpu6050.html')
-def jsMpegEndpoint():
+def mpu6050():
     return render_template('mpu6050.html')
 
 
@@ -55,7 +56,7 @@ def cameraStopEndpoint():
 def streamed_response():
     def generate():
         yield "retry: 5000\n"
-        while true:
+        while True:
             accel_data = sensor.get_accel_data()
             gyro_data = sensor.get_gyro_data()
             data = {'acceleration': accel_data, 'gyro': gyro_data}
