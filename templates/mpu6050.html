@@ -1,7 +1,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div>
-  <canvas id="myChart"></canvas>
+<div style="position: relative; height:400px; width:80vw">
+  <canvas id="accelerationChart"></canvas>
+</div>
+<p>
+<div style="position: relative; height:400px; width:80vw">
+  <canvas id="gyroChart"></canvas>
 </div>
 
 <script>
@@ -10,7 +14,7 @@ const DATA_COUNT = 7;
 const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
 
 const labels = [1];
-const data = {
+const accelerationData = {
   labels: labels,
   datasets: [
     {
@@ -18,16 +22,50 @@ const data = {
       data: [0],
       borderColor: 'red',
       backgroundColor: 'white'
-      //borderColor: Utils.CHART_COLORS.red,
-      //backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
+    },
+    {
+      label: 'acceleration_y',
+      data: [0],
+      borderColor: 'green',
+      backgroundColor: 'white'
+    },
+    {
+      label: 'acceleration_z',
+      data: [0],
+      borderColor: 'blue',
+      backgroundColor: 'white'
+    }
+  ]
+};
+
+const gyroData = {
+  labels: labels,
+  datasets: [
+    {
+      label: 'gyro_x',
+      data: [0],
+      borderColor: 'red',
+      backgroundColor: 'white'
+    },
+    {
+      label: 'gyro_y',
+      data: [0],
+      borderColor: 'green',
+      backgroundColor: 'white'
+    },
+    {
+      label: 'gyro_z',
+      data: [0],
+      borderColor: 'blue',
+      backgroundColor: 'white'
     }
   ]
 };
 
 
-const config = {
+const accelerationConfig = {
   type: 'line',
-  data: data,
+  data: accelerationData,
   options: {
     responsive: true,
     plugins: {
@@ -36,16 +74,40 @@ const config = {
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart'
+        text: 'mpu6050 Acceleration chart'
       }
     }
   },
 };
 
-const myChart = new Chart(
-  document.getElementById('myChart'),
-  config
+const gyroConfig = {
+  type: 'line',
+  data: gyroData,
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'mpu6050 Gyro chart'
+      }
+    }
+  },
+};
+
+
+const accelerationChart = new Chart(
+  document.getElementById('accelerationChart'),
+  accelerationConfig
 );
+
+const gyroChart = new Chart(
+  document.getElementById('gyroChart'),
+  gyroConfig
+);
+
 </script>
 
 <script>
@@ -54,9 +116,17 @@ const myChart = new Chart(
   source.addEventListener('message', function(e) {
     var stats = JSON.parse(e.data)
     console.log(e.data);
-    config.data.datasets[0].data.push(stats['acceleration']['x'])
-    config.data.labels.push(labels[labels.length-1] + 1)
-    myChart.update();
+    accelerationConfig.data.datasets[0].data.push(stats['acceleration']['x'])
+    accelerationConfig.data.datasets[1].data.push(stats['acceleration']['y'])
+    accelerationConfig.data.datasets[2].data.push(stats['acceleration']['z'])
+    accelerationConfig.data.labels.push(labels[labels.length-1] + 1)
+    accelerationChart.update();
+
+    gyroConfig.data.datasets[0].data.push(stats['gyro']['x'])
+    gyroConfig.data.datasets[1].data.push(stats['gyro']['y'])
+    gyroConfig.data.datasets[2].data.push(stats['gyro']['z'])
+    gyroChart.update();
+
   }, false);
 
   source.addEventListener('open', function(e) {

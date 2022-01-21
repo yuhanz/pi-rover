@@ -14,7 +14,7 @@ def streamed_response():
     def generate():
         yield "retry: 10000\n"
         while True:
-            data = {'acceleration': { 'x' : 1}}
+            data = {'acceleration': { 'x' : 1, 'y' : 2, 'z' : 3}, 'gyro': { 'x' : 1, 'y' : 2, 'z' : 3}}
             yield "data: " + json.dumps(data) + "\n\n"
             print("hi")
             time.sleep(2)
