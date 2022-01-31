@@ -64,9 +64,9 @@ def worker_main():
     gyro_data = sensor.get_gyro_data()
     global gravity
     # TODO: gravity should be measure at the beginning.
-    ax = accel_data.x
-    ay = accel_data.y
-    az = accel_data.z
+    ax = accel_data['x']
+    ay = accel_data['y']
+    az = accel_data['z']
     gravity = getGravityMagnitude(ax, ay, az)
     applied_force = getAppliedForce(ax, ay, az, gravity)
     global cosTheta
