@@ -1,7 +1,7 @@
 import math
 import time
 import threading
-from mpu6050 import mpu605
+from mpu6050 import mpu6050
 
 sensor = mpu6050(0x68)
 accel_data = None
@@ -45,7 +45,7 @@ def getThetaDot2(thetaDotX, thetaDotY, thetaDotZ):
 def getCosThetaByGravity(ax, ay, az, g = None):
   if not g:
     g = getGravityMagnitude(ax, ay, az)
-  largestA = functools.reduce(lambda s,x: s if abs(s) > abs(x) else x, lis2, 0)
+  largestA = max([abs(ax), abs(ay), abs(az)])
   cosTheta = abs(largestA) / g
   return cosTheta
 
@@ -64,10 +64,13 @@ def worker_main():
     gyro_data = sensor.get_gyro_data()
     global gravity
     # TODO: gravity should be measure at the beginning.
-    gravity = getGravityMagnitude(accel_data.x, accel_data.y, accel_data.z)
-    applied_force = getAppliedForce(accel_data.x, accel_data.y, accel_data.z, gravity)
+    ax = accel_data.x
+    ay = accel_data.y
+    az = accel_data.z
+    gravity = getGravityMagnitude(ax, ay, az)
+    applied_force = getAppliedForce(ax, ay, az, gravity)
     global cosTheta
-    cosTheta = getCosThetaByGravity(accel_data.x, accel_data.y, accel_data.z, gravity)
+    cosTheta = getCosThetaByGravity(ax, ay, az, gravity)
     time.sleep(1.0)
 
 worker_thread = threading.Thread(target=worker_main)
