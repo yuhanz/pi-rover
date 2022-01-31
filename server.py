@@ -3,6 +3,7 @@ from flask import stream_with_context, request, Response
 from rover_control import *
 import time
 import subprocess
+import measurement
 
 from mpu6050 import mpu6050
 import json
@@ -59,10 +60,12 @@ def streamed_response():
         while True:
             accel_data = sensor.get_accel_data()
             gyro_data = sensor.get_gyro_data()
-            data = {'acceleration': accel_data, 'gyro': gyro_data}
+            cosTheta = measurement.getMeasuredAngle()
+            gravity = measurement.getMeasuredGravity()
+            data = {'acceleration': accel_data, 'gyro': gyro_data, 'cosTheta': cosTheta, 'gravity': gravity}
             yield "data: "+ json.dumps(data) +"\n\n"
             time.sleep(1)
     return Response(stream_with_context(generate()), mimetype='text/event-stream')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0')
